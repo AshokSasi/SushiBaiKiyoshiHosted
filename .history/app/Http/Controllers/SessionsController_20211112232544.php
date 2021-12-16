@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class SessionsController extends Controller
+{
+
+
+    public function __construct()
+    {
+        $this->middleware('guest', ['except' => 'destroy']);
+    }
+
+    public function create()
+    {
+        return view('sessions.create');
+    }
+
+    public function store()
+    {
+        if (!auth()->attempt(request(['email', 'password']))) {
+            //dd(request(['email', 'password']));
+            return back()->withErrors([
+                'message' => 'Please check your credentials and try again.'
+            ]);
+        }
+
+        session()->flash('message', 'You have signed in!');
+
+        return redirect()->home();
+
+        // $credentials = request(['email', 'password']);
+        // if (Auth::attempt($credentials)) {
+
+        //     session()->flash('message', 'You have signed in!');
+
+        //     return redirect()->home();
+        // } else {
+        //     dd($credentials);
+        //     return back()->withErrors([
+
+        //         'message' => 'Please check your credentials and try again.'
+        //     ]);
+        // }
+    }
+
+    public function destroy()
+    {
+        auth()->logout();
+
+        session()->flash('message', 'You have signed out!');
+        return redirect()->home();
+    }
+}

@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class MenuItemsStock extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('menu_items_stock', function (Blueprint $table) {
+
+            $table->unsignedInteger('menu_items_id');
+            $table->foreign('menu_items_id')->references('id')->on('menu_items');
+            $table->unsignedInteger('stock_stockId');
+            $table->foreign('stock_stockId')->references('stockId')->on('stocks');
+            $table->primary(['menu_items_id', 'stock_stockId']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
+}

@@ -1,0 +1,83 @@
+@extends('layouts.master')
+
+@section('content')
+
+<h1 class="banner1">Order # {{$order->orderId}}</h1>
+<div class="album py-5 contOpa rounded">  
+
+            <hr class="text-white"/>
+            <br/>
+            <br/>
+            <table class="table table-hover table-striped table-dark">   
+              <tr>
+                <td>
+                  <h5>Customer Name:</h5>
+                  <td>
+                <td>     
+                  <p>{{ $user->orderUser->userFirstName}} {{ $user->orderUser->userLastName}}</p> 
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Order Total:</h5>
+                  <td>
+                <td>     
+                  <p>${{number_format((float)$order->orderTotal,2)}}</p> 
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h4>Order Date:</h4>
+                  <td>
+                <td>     
+                  <p>{{$order->created_at}}</p> 
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h4>Order Status:</h4>
+                  <td>
+                <td>     
+                  <p>{{$order->orderStatus}}</p> 
+                </td>
+              </tr>          
+           
+        <table class="table table-hover table-striped table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Price ($)</th>
+                <th scope="col">Quantity</th>
+           
+              </tr>
+            </thead>
+            <tbody>
+          
+                @foreach ($currentItem->orderMenu as $itemOrdered)
+          
+                <tr>
+                    <th scope="row">{{$itemOrdered->menuItemName}}</th>
+                   
+                    <td>${{number_format((float)$itemOrdered->menuItemPrice,2)}}</td>
+                    @foreach($order->items as $quantity)
+                    
+                    @if($quantity->menuItemId == $itemOrdered->id)
+                     
+                     <td>{{$quantity->orderedQuantity}}</td>
+                     @endif
+                     @endforeach 
+                </tr>
+             
+      
+                @endforeach 
+                
+              
+             
+         
+            </tbody>
+          </table>
+       
+        @include('layouts.errors')
+    </div>
+
+@endsection
